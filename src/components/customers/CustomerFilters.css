@@ -1,0 +1,79 @@
+.cf-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.cf-tabs {
+  display: flex;
+  background: #f5f5f5;
+  padding: 4px;
+  border-radius: 12px;
+  gap: 4px;
+}
+
+.cf-tab {
+  padding: 0.5rem 1rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--gray-500);
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+
+.cf-tab:hover {
+  color: var(--gray-800);
+}
+
+.cf-tab.active {
+  background: #fff;
+  color: var(--gray-900);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.cf-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 260px;
+}
+
+.cf-search-icon {
+  position: absolute;
+  left: 12px;
+  color: var(--gray-400);
+  font-size: 18px !important;
+  pointer-events: none;
+}
+
+.cf-search-input {
+  width: 100%;
+  padding: 0.6rem 0.6rem 0.6rem 2.2rem;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 0.85rem;
+  transition: all 200ms ease;
+  outline: none;
+}
+
+.cf-search-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(255, 87, 36, 0.1);
+}
+
+@media (max-width: 600px) {
+  .cf-container {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+  .cf-search { width: 100%; }
+  .cf-tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .cf-tab { white-space: nowrap; }
+}

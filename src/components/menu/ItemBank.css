@@ -1,0 +1,93 @@
+.ib-container {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #ebebeb;
+  padding: 1.25rem;
+}
+
+.ib-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.ib-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--gray-900);
+}
+
+.ib-add-form {
+  background: var(--gray-50);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.ib-input, .ib-select {
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.85rem;
+}
+
+.ib-row {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.ib-submit {
+  width: 100%;
+  justify-content: center;
+}
+
+.ib-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ib-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: #fff;
+  border: 1px solid #f0f0f0;
+  border-radius: 8px;
+}
+
+.ib-item-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--gray-800);
+}
+
+.ib-item-meta {
+  font-size: 0.75rem;
+  color: var(--gray-500);
+  margin-top: 2px;
+}
+
+.ib-btn-del {
+  color: #ef5350 !important;
+  padding: 0.25rem 0.5rem;
+}
+.ib-btn-del:hover {
+  background: #ffebee !important;
+}
+
+.ib-empty {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: var(--gray-400);
+  font-size: 0.85rem;
+  border: 1px dashed #e0e0e0;
+  border-radius: 8px;
+}

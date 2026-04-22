@@ -1,0 +1,410 @@
+:root {
+  --db-bg: #f8fafc;
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.6);
+  --glass-glow: rgba(255, 255, 255, 1);
+  --shadow-premium: 0 10px 40px -10px rgba(0, 0, 0, 0.05), 0 5px 15px -5px rgba(0, 0, 0, 0.04);
+  --anim-ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dl-main {
+    background: radial-gradient(circle at top right, #fdf4ff, #f8fafc);
+}
+
+
+/* ── Dashboard Layout ── */
+.db-grid {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 2rem;
+  align-items: start;
+  width: 100%;
+}
+
+@media (max-width: 1200px) {
+    .db-grid {
+        grid-template-columns: 1fr 320px;
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 1024px) {
+    .db-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ── Welcome Header ── *//* ── Mess Snapshot Refinements ── */
+.db-mess-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.db-mess-name {
+    font-size: 1.1rem;
+    font-weight: 900;
+    color: #0f172a;
+    margin-bottom: 2px;
+}
+
+.db-mess-location {
+    font-size: 0.75rem;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.db-mess-footer {
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid #f1f5f9;
+}
+
+/* ── Smart Tip Card ── */
+.db-tip-card {
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%);
+    border-color: #dbeafe;
+}
+
+.db-tip-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 0.75rem;
+}
+
+.db-tip-icon-wrap {
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    background: #dbeafe;
+    color: #3b82f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(59, 130, 246, 0.1);
+}
+
+.db-tip-title {
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: #1e3a8a;
+}
+
+.db-tip-text {
+    font-size: 0.8rem;
+    color: #1e40af;
+    line-height: 1.6;
+    font-weight: 500;
+}
+
+.db-welcome-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(0,0,0,0.03);
+}
+
+.db-greeting h1 {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #0f172a;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.25rem;
+}
+
+@media (max-width: 640px) {
+    .db-greeting h1 {
+        font-size: 1.5rem;
+    }
+    .db-welcome-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+}
+
+/* ── Premium Glass Cards ── */
+.db-premium-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    box-shadow: var(--shadow-premium);
+    overflow: hidden;
+    position: relative;
+    transition: transform 0.4s var(--anim-ease), box-shadow 0.4s var(--anim-ease);
+}
+
+.db-premium-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--glass-glow), transparent);
+    opacity: 0.5;
+}
+
+.db-premium-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.1);
+}
+
+/* ── Mess Snapshot ── */
+.db-mess-preview {
+    border: none;
+}
+
+.db-mess-hero {
+    height: 140px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.db-mess-hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.4));
+}
+
+.db-mess-info {
+    padding: 1.75rem;
+    background: white;
+}
+
+.db-pro-badge {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    box-shadow: 0 4px 12px rgba(217, 119, 6, 0.2);
+}
+
+.db-edit-profile-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 12px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #475569;
+    text-decoration: none;
+    transition: all 0.2s var(--anim-ease);
+}
+
+.db-edit-profile-btn:hover {
+    background: white;
+    border-color: var(--primary);
+    color: var(--primary);
+    box-shadow: 0 4px 12px rgba(255, 87, 36, 0.08);
+}
+
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: 28px;
+  box-shadow: var(--shadow-lg);
+  margin-bottom: 2rem;
+  transition: var(--transition-standard);
+}
+
+.db-premium-card:hover {
+  box-shadow: var(--shadow-elite);
+  transform: translateY(-2px);
+}
+
+/* ── Quick Actions ─────────────────────────────────────────── */
+.db-quick-actions {
+  display: flex;
+  gap: 1rem;
+  margin: 0 0.5rem 2rem;
+}
+
+.db-qa-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.75rem 1.5rem;
+  background: white;
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  color: var(--text-main);
+  font-weight: 700;
+  font-size: 0.9rem;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-standard);
+  text-decoration: none;
+}
+
+.db-qa-btn:hover {
+  background: var(--primary);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--primary);
+}
+
+.db-qa-btn:hover .icon { color: white; }
+
+/* ── Mess Preview Elite ────────────────────────────────────── */
+.db-mess-hero {
+  height: 160px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 22px 22px 0 0;
+  position: relative;
+}
+
+.db-pro-badge {
+  position: absolute;
+  top: 1rem; right: 1rem;
+  padding: 4px 12px;
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(8px);
+  border-radius: 10px;
+  font-size: 0.7rem;
+  font-weight: 900;
+  color: var(--accent);
+  box-shadow: var(--shadow-md);
+}
+
+.db-mess-info { padding: 1.5rem 2rem; }
+
+.db-edit-profile-btn {
+  width: 100%;
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 16px;
+  background: var(--primary);
+  color: white;
+  text-align: center;
+  font-weight: 800;
+  text-decoration: none;
+  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.25);
+  transition: var(--transition-standard);
+}
+
+.db-edit-profile-btn:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 12px 24px rgba(99, 102, 241, 0.35);
+}
+
+/* ── Danger Zone & Sidebar Cards ── */
+.db-sidebar-card {
+  background: white;
+  border-radius: 20px;
+  padding: 1.5rem;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+.db-danger-zone {
+  margin-top: 1.5rem;
+  background: linear-gradient(135deg, #fff5f5 0%, #ffffff 100%);
+  border-color: #feb2b2;
+}
+
+.db-danger-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 0.5rem;
+  color: #c53030;
+}
+
+.db-danger-header h3 {
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+
+.db-danger-text {
+  font-size: 0.8rem;
+  color: #9b2c2c;
+  margin-bottom: 1.25rem;
+  line-height: 1.5;
+}
+
+.btn-wipe-data {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px;
+  background: #fff;
+  border: 1.5px solid #fc8181;
+  color: #c53030;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s var(--anim-ease);
+}
+
+.btn-wipe-data:hover:not(:disabled) {
+  background: #fff5f5;
+  border-color: #f56565;
+  color: #9b2c2c;
+  box-shadow: 0 4px 12px rgba(245, 101, 101, 0.1);
+}
+
+.btn-wipe-data:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-wipe-data .icon {
+  font-size: 18px !important;
+}
+
+.db-divider {
+  height: 1px;
+  background: #f1f5f9;
+  margin: 1rem 0;
+  width: 100%;
+}
+
+.btn-nuclear-reset {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px;
+  background: #c53030;
+  border: none;
+  color: #fff;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s var(--anim-ease);
+}
+
+.btn-nuclear-reset:hover:not(:disabled) {
+  background: #9b2c2c;
+  transform: scale(0.98);
+  box-shadow: 0 4px 15px rgba(197, 48, 48, 0.2);
+}
+
+.btn-nuclear-reset:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-nuclear-reset .icon {
+  font-size: 18px !important;
+}

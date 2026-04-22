@@ -1,0 +1,55 @@
+/* ── Mess Filters Sidebar ── */
+.mf-root {
+  background: #fff;
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  position: sticky;
+  top: 80px;
+  height: fit-content;
+}
+.mf-title {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--gray-900);
+  margin: 0;
+}
+.mf-section { display: flex; flex-direction: column; gap: 0.5rem; }
+.mf-section-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--gray-600);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.mf-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.mf-chips-col { flex-direction: column; }
+
+.mf-range {
+  width: 100%;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+.mf-range-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  color: var(--gray-400);
+}
+
+.mf-reset {
+  background: none;
+  border: 1.5px solid var(--gray-200);
+  border-radius: 8px;
+  padding: 0.5rem;
+  font-family: var(--font-family);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--gray-600);
+  cursor: pointer;
+  transition: all 140ms;
+}
+.mf-reset:hover { border-color: var(--primary); color: var(--primary); }

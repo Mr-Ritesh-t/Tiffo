@@ -1,0 +1,156 @@
+/* ═══════════════════════════════════════════
+   TIFFO — Shared UI Component Styles
+   Imported once in main.jsx
+═══════════════════════════════════════════ */
+
+/* ── Button Base ── */
+.ui-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: none;
+  border-radius: var(--radius);
+  font-family: var(--font-family);
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 150ms ease;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+/* Sizes */
+.ui-btn-sm  { padding: 0.45rem 1rem;  font-size: 0.8rem;  }
+.ui-btn-md  { padding: 0.6rem 1.35rem; font-size: 0.88rem; }
+.ui-btn-lg  { padding: 0.8rem 1.75rem; font-size: 1rem;    }
+
+/* Variants */
+.ui-btn-primary {
+  background: var(--primary);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(255,87,36,0.3);
+}
+.ui-btn-primary:hover {
+  background: #e64a19;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(255,87,36,0.4);
+}
+
+.ui-btn-secondary {
+  background: #fff;
+  color: var(--primary);
+  border: 1.5px solid var(--primary);
+}
+.ui-btn-secondary:hover {
+  background: #fff5f2;
+  transform: translateY(-1px);
+}
+
+.ui-btn-ghost {
+  background: transparent;
+  color: var(--gray-700);
+  border: 1.5px solid var(--gray-200);
+}
+.ui-btn-ghost:hover {
+  background: var(--gray-50);
+  border-color: var(--gray-400);
+  color: var(--gray-900);
+}
+
+.ui-btn-cancel {
+  background: transparent;
+  color: var(--gray-500);
+  border: none;
+  box-shadow: none;
+}
+.ui-btn-cancel:hover { color: var(--gray-800); }
+
+.ui-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* ── Card ── */
+.ui-card {
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+}
+.ui-card-sm  { padding: 1rem; }
+.ui-card-md  { padding: 1.4rem; }
+.ui-card-lg  { padding: 2rem; }
+.ui-card-hover:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+  transition: all 180ms ease;
+}
+
+/* ── Badge ── */
+.ui-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.ui-badge-success { background: #e8f5e9; color: #2e7d32; }
+.ui-badge-warning { background: #fff3e0; color: #e65100; }
+.ui-badge-primary { background: #fff5f2; color: var(--primary); }
+.ui-badge-neutral { background: var(--gray-100); color: var(--gray-600); }
+.ui-badge-info    { background: #e3f2fd; color: #1565c0; }
+
+/* ── Pill / Filter Chip ── */
+.ui-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0.35rem 0.85rem;
+  border-radius: 20px;
+  border: 1.5px solid var(--gray-200);
+  background: #fff;
+  color: var(--gray-600);
+  font-family: var(--font-family);
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 140ms ease;
+  white-space: nowrap;
+  line-height: 1;
+}
+.ui-pill:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: #fff5f2;
+}
+.ui-pill.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+  font-weight: 600;
+}
+.ui-pill-icon { font-size: 15px !important; }
+
+/* ── Icon helper (Material Icons Round) ── */
+.icon {
+  font-family: 'Material Icons Round';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 20px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+  vertical-align: middle;
+  user-select: none;
+}
