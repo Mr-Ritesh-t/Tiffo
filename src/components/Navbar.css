@@ -1,7 +1,7 @@
 .navbar {
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 2000;
     height: var(--navbar-height);
     background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(16px);

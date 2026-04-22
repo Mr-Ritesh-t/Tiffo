@@ -22,8 +22,9 @@ const OnboardingPage = () => {
   const [cuisine, setCuisine] = useState('north_indian');
   const [openingTime, setOpeningTime] = useState('08:00');
   const [closingTime, setClosingTime] = useState('22:00');
-  const [deliveryOptions, setDeliveryOptions] = useState('pickup');
+
   const [pricePerMeal, setPricePerMeal] = useState('');
+  const [isVeg, setIsVeg] = useState(true);
   const [imageUrl, setImageUrl] = useState('');
   const [uploading, setUploading] = useState(false);
 
@@ -58,8 +59,9 @@ const OnboardingPage = () => {
         cuisine,
         openingTime,
         closingTime,
-        deliveryOptions,
         pricePerMeal: Number(pricePerMeal),
+        veg: isVeg === 'true' || isVeg === true,
+        diet: isVeg === 'true' || isVeg === true ? 'veg' : (isVeg === 'both' ? 'both' : 'nonveg'),
         imageUrl,
         gallery: imageUrl ? [imageUrl] : [],
         onboardingCompleted: true
@@ -71,7 +73,6 @@ const OnboardingPage = () => {
       };
 
       await completeOnboarding(profileData);
-      
       navigate(isOwner ? '/owner/dashboard' : '/messes');
     } catch (err) {
       setError('Failed to save profile information. Please try again.');
@@ -81,19 +82,19 @@ const OnboardingPage = () => {
   };
 
   return (
-    <div className="onboarding-page" style={{ minHeight: '100vh', backgroundColor: 'var(--gray-50)', paddingBottom: '4rem' }}>
+    <div className="onboarding-page">
       <Navbar />
       
-      <div className="container" style={{ maxWidth: '600px', margin: '4rem auto 0', padding: '0 1rem' }}>
-        <div style={{ backgroundColor: 'white', padding: '2rem', borderRadius: '16px', boxShadow: 'var(--shadow-sm)', border: '1px solid var(--gray-200)' }}>
-          <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-            <span className="material-icons" style={{ fontSize: '3rem', color: 'var(--primary)', marginBottom: '1rem' }}>
-              {isOwner ? 'storefront' : 'how_to_reg'}
-            </span>
-            <h1 style={{ fontSize: '1.75rem', fontWeight: '700', color: 'var(--gray-900)', marginBottom: '0.5rem' }}>
-              Complete your profile
-            </h1>
-            <p style={{ color: 'var(--gray-500)' }}>
+      <div className="onboarding-container">
+        <div className="onboarding-card">
+          <div className="onboarding-header">
+            <div className="onboarding-icon-box">
+              <span className="material-icons-round">
+                {isOwner ? 'storefront' : 'how_to_reg'}
+              </span>
+            </div>
+            <h1 className="onboarding-title">Complete your profile</h1>
+            <p className="onboarding-subtitle">
               {isOwner 
                 ? "Let's set up your mess partner account so customers can find you."
                 : "Just a few more details so we can deliver your perfect meal."}
@@ -101,17 +102,18 @@ const OnboardingPage = () => {
           </div>
 
           {error && (
-            <div style={{ color: '#ef5350', backgroundColor: '#ffebee', padding: '10px', borderRadius: '8px', marginBottom: '16px', fontSize: '14px', textAlign: 'center' }}>
+            <div className="onboarding-error">
+              <span className="material-icons-round">error_outline</span>
               {error}
             </div>
           )}
 
-          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+          <form onSubmit={handleSubmit} className="onboarding-form">
             {!isOwner && (
               <>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.9rem', fontWeight: '600', marginBottom: '0.5rem', color: 'var(--gray-700)' }}>
-                    Phone Number <span style={{ color: '#ef5350' }}>*</span>
+                <div className="form-group">
+                  <label className="form-label">
+                    Phone Number <span className="required-star">*</span>
                   </label>
                   <input 
                     type="tel" 
@@ -119,13 +121,12 @@ const OnboardingPage = () => {
                     placeholder="+91 98765 43210"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    style={{ width: '100%' }}
                   />
                 </div>
 
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.9rem', fontWeight: '600', marginBottom: '0.5rem', color: 'var(--gray-700)' }}>
-                    Default Delivery Address <span style={{ color: '#ef5350' }}>*</span>
+                <div className="form-group">
+                  <label className="form-label">
+                    Default Delivery Address <span className="required-star">*</span>
                   </label>
                   <textarea 
                     className="input-field" 
@@ -133,19 +134,15 @@ const OnboardingPage = () => {
                     rows="3"
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
-                    style={{ width: '100%', resize: 'vertical' }}
                   />
                 </div>
 
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.9rem', fontWeight: '600', marginBottom: '0.5rem', color: 'var(--gray-700)' }}>
-                    Dietary Preference
-                  </label>
+                <div className="form-group">
+                  <label className="form-label">Dietary Preference</label>
                   <select 
                     className="input-field"
                     value={diet}
                     onChange={(e) => setDiet(e.target.value)}
-                    style={{ width: '100%' }}
                   >
                     <option value="veg">Pure Vegetarian</option>
                     <option value="nonveg">Non-Vegetarian</option>
@@ -157,9 +154,9 @@ const OnboardingPage = () => {
 
             {isOwner && (
               <>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.9rem', fontWeight: '600', marginBottom: '0.5rem', color: 'var(--gray-700)' }}>
-                    Mess / Business Name <span style={{ color: '#ef5350' }}>*</span>
+                <div className="form-group">
+                  <label className="form-label">
+                    Mess / Business Name <span className="required-star">*</span>
                   </label>
                   <input 
                     type="text" 
@@ -167,13 +164,12 @@ const OnboardingPage = () => {
                     placeholder="e.g. Sharmaji Ki Rasoi"
                     value={messName}
                     onChange={(e) => setMessName(e.target.value)}
-                    style={{ width: '100%' }}
                   />
                 </div>
 
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.9rem', fontWeight: '600', marginBottom: '0.5rem', color: 'var(--gray-700)' }}>
-                    Owner / Business Phone <span style={{ color: '#ef5350' }}>*</span>
+                <div className="form-group">
+                  <label className="form-label">
+                    Owner / Business Phone <span className="required-star">*</span>
                   </label>
                   <input 
                     type="tel" 
@@ -181,13 +177,12 @@ const OnboardingPage = () => {
                     placeholder="Contact number for customers"
                     value={businessPhone}
                     onChange={(e) => setBusinessPhone(e.target.value)}
-                    style={{ width: '100%' }}
                   />
                 </div>
 
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.9rem', fontWeight: '600', marginBottom: '0.5rem', color: 'var(--gray-700)' }}>
-                    Mess Location <span style={{ color: '#ef5350' }}>*</span>
+                <div className="form-group">
+                  <label className="form-label">
+                    Mess Location <span className="required-star">*</span>
                   </label>
                   <textarea 
                     className="input-field" 
@@ -195,19 +190,15 @@ const OnboardingPage = () => {
                     rows="2"
                     value={messAddress}
                     onChange={(e) => setMessAddress(e.target.value)}
-                    style={{ width: '100%', resize: 'vertical' }}
                   />
                 </div>
 
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.9rem', fontWeight: '600', marginBottom: '0.5rem', color: 'var(--gray-700)' }}>
-                    Primary Cuisine Type
-                  </label>
+                <div className="form-group">
+                  <label className="form-label">Primary Cuisine Type</label>
                   <select 
                     className="input-field"
                     value={cuisine}
                     onChange={(e) => setCuisine(e.target.value)}
-                    style={{ width: '100%' }}
                   >
                     <option value="north_indian">North Indian</option>
                     <option value="south_indian">South Indian</option>
@@ -217,86 +208,64 @@ const OnboardingPage = () => {
                   </select>
                 </div>
 
-                <div style={{ display: 'flex', gap: '1rem' }}>
-                  <div style={{ flex: 1 }}>
-                    <label style={{ display: 'block', fontSize: '0.9rem', fontWeight: '600', marginBottom: '0.5rem', color: 'var(--gray-700)' }}>
-                      Opening Time
-                    </label>
+                <div className="form-group">
+                  <label className="form-label">Dietary Preference (Mess Type)</label>
+                  <select 
+                    className="input-field"
+                    value={isVeg}
+                    onChange={(e) => setIsVeg(e.target.value === 'true' ? true : (e.target.value === 'false' ? false : 'both'))}
+                  >
+                    <option value="true">Pure Vegetarian</option>
+                    <option value="false">Non-Vegetarian</option>
+                    <option value="both">Both (Veg & Non-Veg)</option>
+                  </select>
+                </div>
+
+                <div className="form-row">
+                  <div className="form-group" style={{ flex: 1 }}>
+                    <label className="form-label">Opening Time</label>
                     <input 
                       type="time" 
                       className="input-field"
                       value={openingTime}
                       onChange={(e) => setOpeningTime(e.target.value)}
-                      style={{ width: '100%' }}
                     />
                   </div>
-                  <div style={{ flex: 1 }}>
-                    <label style={{ display: 'block', fontSize: '0.9rem', fontWeight: '600', marginBottom: '0.5rem', color: 'var(--gray-700)' }}>
-                      Closing Time
-                    </label>
+                  <div className="form-group" style={{ flex: 1 }}>
+                    <label className="form-label">Closing Time</label>
                     <input 
                       type="time" 
                       className="input-field"
                       value={closingTime}
                       onChange={(e) => setClosingTime(e.target.value)}
-                      style={{ width: '100%' }}
                     />
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', gap: '1rem' }}>
-                   <div style={{ flex: 1 }}>
-                    <label style={{ display: 'block', fontSize: '0.9rem', fontWeight: '600', marginBottom: '0.5rem', color: 'var(--gray-700)' }}>
-                      Delivery Options
-                    </label>
-                    <select 
-                      className="input-field"
-                      value={deliveryOptions}
-                      onChange={(e) => setDeliveryOptions(e.target.value)}
-                      style={{ width: '100%' }}
-                    >
-                      <option value="pickup">Pickup Only</option>
-                      <option value="delivery">Delivery Only</option>
-                      <option value="both">Pickup & Delivery</option>
-                    </select>
-                  </div>
-                  <div style={{ flex: 1 }}>
-                    <label style={{ display: 'block', fontSize: '0.9rem', fontWeight: '600', marginBottom: '0.5rem', color: 'var(--gray-700)' }}>
-                      Avg Price per Meal (₹) <span style={{ color: '#ef5350' }}>*</span>
-                    </label>
-                    <input 
-                      type="number" 
-                      min="0"
-                      className="input-field" 
-                      placeholder="e.g. 120"
-                      value={pricePerMeal}
-                      onChange={(e) => setPricePerMeal(e.target.value)}
-                      style={{ width: '100%' }}
-                    />
-                  </div>
-                </div>
-
-                <div style={{ marginTop: '0.5rem' }}>
-                  <label style={{ display: 'block', fontSize: '0.9rem', fontWeight: '600', marginBottom: '0.5rem', color: 'var(--gray-700)' }}>
-                    Mess Cover Photo (Recommended)
+                <div className="form-group">
+                  <label className="form-label">
+                    Avg Price per Meal (₹) <span className="required-star">*</span>
                   </label>
+                  <input 
+                    type="number" 
+                    min="0"
+                    className="input-field" 
+                    placeholder="e.g. 120"
+                    value={pricePerMeal}
+                    onChange={(e) => setPricePerMeal(e.target.value)}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Mess Cover Photo (Recommended)</label>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                    <label 
-                      className={`btn ${uploading ? 'disabled' : 'btn-outline'}`} 
-                      style={{ 
-                        flex: 1, 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        justifyContent: 'center', 
-                        gap: '8px', 
-                        cursor: uploading ? 'not-allowed' : 'pointer',
-                        padding: '0.75rem',
-                        border: '2px dashed var(--gray-300)',
-                        backgroundColor: 'var(--gray-50)'
-                      }}
-                    >
-                      <span className="material-icons">{uploading ? 'sync' : 'add_a_photo'}</span>
-                      {uploading ? 'Uploading...' : 'Click to Upload Photo'}
+                    <label className={`upload-dropzone ${imageUrl ? 'has-image' : ''}`}>
+                      <span className="material-icons-round icon">
+                        {uploading ? 'sync' : 'add_a_photo'}
+                      </span>
+                      <span style={{ fontSize: '0.9rem', color: 'var(--gray-600)', fontWeight: 600 }}>
+                        {uploading ? 'Uploading...' : 'Click to Upload Photo'}
+                      </span>
                       <input 
                         type="file" 
                         hidden 
@@ -317,12 +286,12 @@ const OnboardingPage = () => {
                       />
                     </label>
                     {imageUrl && (
-                      <div style={{ width: '80px', height: '60px', borderRadius: '8px', overflow: 'hidden', border: '1px solid var(--gray-200)' }}>
-                        <img src={imageUrl} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      <div className="preview-thumb">
+                        <img src={imageUrl} alt="Preview" />
                       </div>
                     )}
                   </div>
-                  <p style={{ fontSize: '0.75rem', color: 'var(--gray-500)', marginTop: '0.5rem' }}>
+                  <p style={{ fontSize: '0.75rem', color: 'var(--gray-500)', marginTop: '0.25rem' }}>
                     A good photo helps customers trust your mess.
                   </p>
                 </div>
@@ -331,12 +300,13 @@ const OnboardingPage = () => {
 
             <button 
               type="submit" 
-              className="btn btn-primary btn-lg" 
-              style={{ width: '100%', marginTop: '1rem', display: 'flex', justifyContent: 'center' }}
+              className="btn-onboarding-submit" 
               disabled={loading}
             >
-              {loading ? 'Saving Profile...' : 'Complete Registration'}
-              {!loading && <span className="material-icons" style={{ marginLeft: '8px' }}>arrow_forward</span>}
+              <span className="btn-text">
+                {loading ? 'Saving Profile...' : 'Complete Registration'}
+              </span>
+              {!loading && <span className="material-icons-round icon">arrow_forward</span>}
             </button>
           </form>
         </div>

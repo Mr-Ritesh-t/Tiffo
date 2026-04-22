@@ -4,7 +4,7 @@ import { getMessReviews, submitReview } from '../../services/reviewService'
 import { useAuth } from '../../hooks/useAuth'
 import './ReviewsFeed.css'
 
-export default function ReviewsFeed({ messId }) {
+export default function ReviewsFeed({ messId, totalCount }) {
   const { user, isCustomer } = useAuth()
   const [reviews, setReviews] = useState([])
   const [loading, setLoading] = useState(true)
@@ -69,7 +69,7 @@ export default function ReviewsFeed({ messId }) {
         <div className="reviews-summary">
           <span className="icon" style={{color: '#fbbf24'}}>star</span>
           <strong>{reviews.length > 0 ? (reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length).toFixed(1) : '0.0'}</strong>
-          <span className="count">({reviews.length} reviews)</span>
+          <span className="count">({totalCount || reviews.length} reviews)</span>
         </div>
       </div>
 

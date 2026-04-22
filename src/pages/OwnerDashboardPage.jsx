@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom'
 import DashboardLayout, { useSidebar } from '../layout/DashboardLayout'
 import MenuEditor from '../components/dashboard/MenuEditor'
 import { useAuth } from '../hooks/useAuth'
-import { getMessById, wipeAllCurrentData, deleteMessAndSubcollections } from '../services/messService'
+import { getMessById, updateMess, wipeAllCurrentData, deleteMessAndSubcollections } from '../services/messService'
 import { deleteCurrentUserAccount } from '../services/authService'
+import OwnerReviews from '../components/dashboard/OwnerReviews'
 import './OwnerDashboardPage.css'
 
 export default function OwnerDashboardPage() {
@@ -42,6 +43,18 @@ export default function OwnerDashboardPage() {
       alert("Failed to wipe data. Check your permissions.")
     } finally {
       setWiping(false)
+    }
+  }
+
+  const handleToggleStatus = async () => {
+    if (!mess) return
+    const newState = !mess.isOpen
+    try {
+      const updated = await updateMess(user.id, { isOpen: newState })
+      setMess(updated)
+    } catch (err) {
+      console.error("Status update error:", err)
+      alert("Failed to update status: " + (err.message || "Unknown error"))
     }
   }
 
@@ -87,6 +100,22 @@ export default function OwnerDashboardPage() {
             </div>
           </div>
           <div className="dl-topbar-right">
+            <div className="db-status-bar">
+               <button 
+                className={`db-status-toggle ${mess?.isOpen ? 'is-open' : 'is-closed'}`}
+                onClick={handleToggleStatus}
+                title={mess?.isOpen ? 'Currently Open' : 'Currently Closed'}
+              >
+                <div className="db-status-dot-pulse" />
+                <span className="db-status-text">
+                  {mess?.isOpen ? 'Open' : 'Closed'}
+                </span>
+                <span className="material-icons-round" style={{ fontSize: '18px' }}>
+                  {mess?.isOpen ? 'check_circle' : 'do_not_disturb_on'}
+                </span>
+              </button>
+            </div>
+
             <Link to="/owner/notifications" className="dl-icon-btn" aria-label="Notifications">
               <span className="icon">notifications</span>
               <span className="dl-notif-dot" />
@@ -100,6 +129,9 @@ export default function OwnerDashboardPage() {
           {/* Main Content: Menu Management */}
           <div className="db-col-left">
             <MenuEditor />
+            
+            {/* 📬 Live Feedback Section */}
+            <OwnerReviews messId={user?.id} />
           </div>
 
           {/* Sidebar: Profile */}
@@ -117,7 +149,6 @@ export default function OwnerDashboardPage() {
                     <h3 className="db-mess-name">{mess?.name || 'My Mess'}</h3>
                     <p className="db-mess-location">{mess?.location?.split(',')[0] || 'Set Location'}</p>
                   </div>
-                  <span className="db-pro-badge">PREMIUM</span>
                 </div>
                 
                 <div className="db-mess-footer">

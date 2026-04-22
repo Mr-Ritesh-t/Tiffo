@@ -251,23 +251,63 @@
 }
 
 .elite-mini-map {
+  position: relative;
+  cursor: default;
+  overflow: hidden;
+  border-radius: 12px;
+  background: var(--gray-100);
   margin-top: 16px;
-  background: #fff;
-  border-radius: 16px;
-  padding: 4px;
-  border: 1px solid var(--gray-200);
+}
+
+.elite-mini-map.is-locked {
+  cursor: pointer;
+}
+
+.elite-mini-map.is-locked .leaflet-container {
+  pointer-events: none;
+}
+
+.map-unlock-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 140px; /* Matching map height */
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(2px);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  gap: 8px;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  pointer-events: none; /* Let clicks pass through to the parent container */
+}
+
+.map-unlock-overlay .material-icons-round {
+  font-size: 28px;
+  opacity: 0.9;
+}
+
+.map-unlock-overlay span:not(.material-icons-round) {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.9;
 }
 
 .map-area-label {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 12px;
-  font-size: 0.8rem;
+  padding: 12px 2px 2px;
+  font-size: 0.85rem;
   color: var(--gray-600);
-  font-weight: 500;
-  line-height: 1.4;
-  margin: 0;
+  font-weight: 600;
 }
 
 .map-area-label .icon {
@@ -343,18 +383,38 @@
   gap: 12px;
 }
 
-.feature-pill {
+.sidebar-about-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sidebar-about-header {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.85rem;
-  color: var(--gray-600);
-  font-weight: 500;
+  color: var(--gray-800);
 }
 
-.feature-pill .icon {
-  color: #10b981;
+.sidebar-about-header h4 {
+  font-size: 0.85rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+.sidebar-about-header .icon {
+  color: var(--primary);
   font-size: 18px !important;
+}
+
+.sidebar-about-text {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--gray-600);
+  margin: 0;
+  white-space: pre-line;
 }
 
 .mess-details-infobox {
@@ -442,5 +502,56 @@
 
 .hero-placeholder .icon {
   font-size: 4rem !important;
+}
+
+/* ── Live Status Pills ── */
+.live-status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 12px;
+}
+
+.live-status-pill.is-open {
+    background: rgba(34, 197, 94, 0.1);
+    color: #166534;
+    border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+.live-status-pill.is-closed {
+    background: rgba(239, 68, 68, 0.1);
+    color: #991b1b;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.live-pulse-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    position: relative;
+}
+
+.is-open .live-pulse-dot {
+    background: #22c55e;
+    box-shadow: 0 0 8px rgba(34, 197, 94, 0.4);
+}
+
+.is-closed .live-pulse-dot {
+    background: #ef4444;
+}
+
+.is-open .live-pulse-dot::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    border: 1.5px solid #22c55e;
+    animation: statusPulse 2s infinite;
 }
 

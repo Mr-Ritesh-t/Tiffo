@@ -1,4 +1,4 @@
-import { collection, addDoc, doc, runTransaction, query, getDocs, orderBy, limit, serverTimestamp } from 'firebase/firestore'
+import { collection, addDoc, doc, runTransaction, query, getDocs, orderBy, limit, getCountFromServer } from 'firebase/firestore'
 import { db, auth } from './firebase'
 import { paths } from './firestorePaths'
 
@@ -21,7 +21,7 @@ export async function submitReview(messId, rating, comment, customerName = null,
     const messRef = doc(db, paths.messProfile(messId))
     const reviewsCollection = collection(db, paths.messReviews(messId))
 
-    // Transaction to update mess rating and order status
+    // Transaction to update mess rating, order status, and add the review atomically
     await runTransaction(db, async (transaction) => {
       const messDoc = await transaction.get(messRef)
       if (!messDoc.exists()) {
@@ -48,16 +48,17 @@ export async function submitReview(messId, rating, comment, customerName = null,
         const orderRef = doc(db, paths.orders(), orderId)
         transaction.update(orderRef, { isReviewed: true })
       }
-    })
 
-    // 3. Add the review document
-    await addDoc(reviewsCollection, {
-      orderId: orderId || null,
-      customerId: user?.uid || 'guest_user',
-      customerName: customerName || user?.displayName || 'Anonymous User',
-      rating,
-      comment: comment || '',
-      createdAt: new Date().toISOString()
+      // 3. Add the Review Document (Inside transaction for atomicity)
+      const reviewRef = doc(collection(db, paths.messReviews(messId)))
+      transaction.set(reviewRef, {
+        orderId: orderId || null,
+        customerId: user?.uid || 'guest_user',
+        customerName: customerName || user?.displayName || 'Anonymous User',
+        rating,
+        comment: comment || '',
+        createdAt: new Date().toISOString()
+      })
     })
 
     return { success: true }
@@ -85,5 +86,20 @@ export async function getMessReviews(messId, maxResults = 10) {
   } catch (err) {
     console.error(`Failed to fetch reviews for mess ${messId}:`, err)
     return []
+  }
+}
+
+/**
+ * Fetches the exact total count of reviews for a mess from the server.
+ * Useful for correcting out-of-sync summary fields.
+ */
+export async function getReviewCount(messId) {
+  try {
+    const coll = collection(db, paths.messReviews(messId))
+    const snapshot = await getCountFromServer(coll)
+    return snapshot.data().count
+  } catch (err) {
+    console.error('Error fetching review count:', err)
+    return 0
   }
 }

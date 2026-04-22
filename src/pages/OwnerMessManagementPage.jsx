@@ -15,18 +15,13 @@ const TABS = [
 ]
 
 const DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
-const SERVICE_OPTIONS = ['Delivery','Dine-In','Takeaway']
+
 
 const defaultHours = Object.fromEntries(
   DAYS.map(d => [d, { open: d !== 'Sunday', from: '11:00', to: '22:00' }])
 )
 
-/* ── Service Icons Map ── */
-const SERVICE_INFO = [
-  { id: 'Delivery',  icon: 'moped',         desc: 'Doorstep delivery for customers' },
-  { id: 'Dine-In',   icon: 'restaurant',    desc: 'Seating area at your establishment' },
-  { id: 'Takeaway',  icon: 'shopping_bag',  desc: 'Self-pickup service for orders' },
-]
+
 
 export default function OwnerMessManagementPage() {
   const { toggle } = useSidebar()
@@ -39,7 +34,7 @@ export default function OwnerMessManagementPage() {
   const [cuisineType, setCuisineType] = useState('North Indian')
   const [description, setDescription] = useState('')
   const [pricePerMeal, setPricePerMeal] = useState(100)
-  const [services, setServices] = useState([])
+
   const [hours, setHours] = useState(defaultHours)
   const [address, setAddress] = useState('')
   const [phone, setPhone] = useState('')
@@ -64,7 +59,7 @@ export default function OwnerMessManagementPage() {
           setCuisineType(data.cuisine || 'North Indian')
           setDescription(data.description || '')
           setPricePerMeal(data.pricePerMeal || 100)
-          setServices(data.services || [])
+
           setHours(data.businessHours || defaultHours)
           setAddress(data.location || '')
           setPhone(data.phone || '')
@@ -85,8 +80,7 @@ export default function OwnerMessManagementPage() {
     loadData()
   }, [user])
 
-  const toggleService = t =>
-    setServices(prev => prev.includes(t) ? prev.filter(x => x !== t) : [...prev, t])
+
 
   const updateHour = (day, field, val) =>
     setHours(prev => ({ ...prev, [day]: { ...prev[day], [field]: val } }))
@@ -107,7 +101,7 @@ export default function OwnerMessManagementPage() {
         cuisine: cuisineType,
         description,
         pricePerMeal,
-        services,
+
         businessHours: hours,
         location: address,
         phone,
@@ -299,36 +293,7 @@ export default function OwnerMessManagementPage() {
                   </div>
                 </div>
 
-                <div className="mm-card">
-                  <h3 className="mm-card-title">
-                    <span className="icon mm-card-icon">delivery_dining</span>
-                    Service &amp; Pricing
-                  </h3>
-                  <p className="mm-card-sub">Choose which services are active for your mess</p>
-                  
-                  <div className="mm-service-grid">
-                    {SERVICE_INFO.map(item => (
-                      <div 
-                        key={item.id} 
-                        className={`mm-service-card ${services.includes(item.id) ? 'active' : ''}`}
-                        onClick={() => toggleService(item.id)}
-                      >
-                        <div className="mm-sc-icon">
-                          <span className="icon">{item.icon}</span>
-                        </div>
-                        <div className="mm-sc-details">
-                          <div className="mm-sc-name">{item.id}</div>
-                          <div className="mm-sc-desc">{item.desc}</div>
-                        </div>
-                        <div className="mm-sc-check">
-                          <span className="icon">
-                            {services.includes(item.id) ? 'check_circle' : 'radio_button_unchecked'}
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+
 
               </>
             )}

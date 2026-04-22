@@ -1,0 +1,134 @@
+.owner-reviews-card {
+  margin-top: 2rem;
+  background: var(--white);
+  border-radius: 24px;
+  padding: 1.5rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+  border: 1px solid var(--gray-100);
+}
+
+.owner-reviews-header {
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.owner-reviews-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--gray-900);
+  margin-bottom: 4px;
+}
+
+.owner-reviews-title .icon {
+  color: var(--primary);
+  font-size: 24px !important;
+}
+
+.owner-reviews-sub {
+  font-size: 0.9rem;
+  color: var(--gray-500);
+}
+
+.owner-reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.owner-review-item {
+  padding: 1.25rem;
+  background: var(--gray-50);
+  border-radius: 18px;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.owner-review-item:hover {
+  background: var(--white);
+  border-color: var(--primary-subtle);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+  transform: translateY(-2px);
+}
+
+.owner-review-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.owner-review-user {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.owner-review-avatar {
+  width: 40px;
+  height: 40px;
+  background: var(--primary-subtle);
+  color: var(--primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.owner-review-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--gray-900);
+}
+
+.owner-review-date {
+  font-size: 0.75rem;
+  color: var(--gray-400);
+}
+
+.owner-review-stars {
+  display: flex;
+  gap: 2px;
+}
+
+.star-mini {
+  font-size: 16px !important;
+  color: var(--gray-200);
+}
+
+.star-mini.filled {
+  color: #fbbf24;
+}
+
+.owner-review-text {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--gray-700);
+  font-style: italic;
+  margin: 0;
+}
+
+.owner-reviews-empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--gray-400);
+}
+
+.owner-reviews-empty .icon {
+  font-size: 48px !important;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.owner-reviews-loading {
+  padding: 2rem;
+  text-align: center;
+  color: var(--gray-500);
+  font-weight: 500;
+}

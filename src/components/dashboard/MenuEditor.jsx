@@ -101,8 +101,8 @@ function AdvancedMenuBoard() {
             </div>
             
             <div className="me-footer">
-               <div className="db-live-indicator" style={{ border: 'none', background: 'transparent' }}>
-                  <div className="db-indicator-dot" />
+               <div className="db-live-indicator-elite">
+                  <div className="db-indicator-dot-elite" />
                   Live Sync Active
                 </div>
             </div>

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { getMesses, calculateDistance } from '../services/messService'
+import AccurateCountPill from '../components/reviews/AccurateCountPill'
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
@@ -50,6 +51,7 @@ export default function MessListingPage() {
     const [viewMode, setViewMode] = useState('grid') // 'grid' | 'list' | 'map'
     const [userLocation, setUserLocation] = useState(null)
     const [detecting, setDetecting] = useState(false)
+    const [showFilters, setShowFilters] = useState(false)
 
     useEffect(() => {
         async function fetchMesses() {
@@ -91,28 +93,39 @@ export default function MessListingPage() {
     const toggleService = (s) => setServices(prev => prev.includes(s) ? prev.filter(x => x !== s) : [...prev, s])
 
     const filtered = messes.filter(m => {
-        if (foodType === 'Veg Only' && !m.veg) return false
-        if (foodType === 'Non-Veg' && m.veg) return false
-        if (services.length > 0 && !services.includes(m.type)) return false
+        // Fallbacks for data field names to support older records
+        const effectivePrice = Number(m.price || m.pricePerMeal || 0)
+        const isVeg = m.veg !== undefined ? m.veg : (m.diet === 'veg' || m.foodType === 'Veg Only')
+        const currentType = m.type || 'Full Meal'
+
+        if (foodType === 'Veg Only' && !isVeg) return false
+        if (foodType === 'Non-Veg' && isVeg) return false
+        if (services.length > 0 && !services.includes(currentType)) return false
         if (m.rating < minRating) return false
-        if (m.price > maxPrice) return false
+        if (effectivePrice > maxPrice) return false
         
-        const nameMatch = m.name?.toLowerCase().includes(searchVal.toLowerCase())
-        const cuisineMatch = m.cuisine?.toLowerCase().includes(searchVal.toLowerCase())
-        if (searchVal && !nameMatch && !cuisineMatch) return false
+        if (searchVal) {
+            const s = searchVal.toLowerCase()
+            return (
+              m.name?.toLowerCase().includes(s) || 
+              m.cuisine?.toLowerCase().includes(s) || 
+              m.location?.toLowerCase().includes(s) ||
+              m.messName?.toLowerCase().includes(s)
+            )
+        }
         return true
     }).sort((a, b) => {
         const ratingA = a.rating || 0
         const ratingB = b.rating || 0
         if (sortBy === 'rating') return ratingB - ratingA
         
-        const priceA = a.price || 0
-        const priceB = b.price || 0
+        const priceA = Number(a.price || a.pricePerMeal || 0)
+        const priceB = Number(b.price || b.pricePerMeal || 0)
         if (sortBy === 'price_low') return priceA - priceB
         if (sortBy === 'price_high') return priceB - priceA
         
-        const distA = parseFloat(a.distance || 0)
-        const distB = parseFloat(b.distance || 0)
+        const distA = parseFloat(a.distanceVal || a.distance || 0)
+        const distB = parseFloat(b.distanceVal || b.distance || 0)
         if (sortBy === 'distance') return distA - distB
         return 0
     })
@@ -125,7 +138,7 @@ export default function MessListingPage() {
             <div className="elp-topbar">
                 <div className="container elp-topbar-inner">
                     <div className="elp-search">
-                        <span className="icon elp-search-icon">search</span>
+                        <span className="material-icons-round elp-search-icon">search</span>
                         <input
                             id="enhanced-search"
                             className="elp-search-input"
@@ -135,21 +148,32 @@ export default function MessListingPage() {
                         />
                     </div>
                     <div className="elp-topbar-right">
-                        <span className="elp-result-count">Showing <strong>{filtered.length}</strong> of {messes.length} results in <strong>HSR Layout</strong></span>
-                        <div className="elp-sort">
-                            <span className="icon" style={{ color: 'var(--gray-500)', fontSize: '18px' }}>swap_vert</span>
-                            <select id="enhanced-sort" className="sort-select" value={sortBy} onChange={e => setSortBy(e.target.value)}>
-                                <option value="recommended">Recommended</option>
-                                <option value="rating">Best Rating</option>
-                                <option value="price_low">Price: Low to High</option>
-                                <option value="price_high">Price: High to Low</option>
-                                <option value="distance">Nearest First</option>
-                            </select>
+                        <div className="elp-controls-row">
+                          <button className="elp-action-chip" onClick={() => setShowFilters(true)}>
+                            <span className="material-icons-round">tune</span>
+                            Filters
+                          </button>
+                          
+                          <div className="elp-action-chip elp-sort-chip">
+                              <span className="material-icons-round">swap_vert</span>
+                              <select id="enhanced-sort" className="sort-select-chip" value={sortBy} onChange={e => setSortBy(e.target.value)}>
+                                  <option value="recommended">Sort</option>
+                                  <option value="rating">Best Rating</option>
+                                  <option value="price_low">Price: Low to High</option>
+                                  <option value="price_high">Price: High to Low</option>
+                                  <option value="distance">Nearest First</option>
+                              </select>
+                          </div>
+
+                          <div className="elp-view-chips">
+                              <button className={`view-chip ${viewMode === 'grid' ? 'active' : ''}`} onClick={() => setViewMode('grid')}><span className="material-icons-round">grid_view</span></button>
+                              <button className={`view-chip ${viewMode === 'list' ? 'active' : ''}`} onClick={() => setViewMode('list')}><span className="material-icons-round">view_list</span></button>
+                              <button className={`view-chip ${viewMode === 'map' ? 'active' : ''}`} onClick={() => setViewMode('map')}><span className="material-icons-round">map</span></button>
+                          </div>
                         </div>
-                        <div className="elp-view-toggle">
-                            <button className={`view-btn ${viewMode === 'grid' ? 'active' : ''}`} onClick={() => setViewMode('grid')} id="view-grid"><span className="icon">grid_view</span></button>
-                            <button className={`view-btn ${viewMode === 'list' ? 'active' : ''}`} onClick={() => setViewMode('list')} id="view-list"><span className="icon">view_list</span></button>
-                            <button className={`view-btn ${viewMode === 'map' ? 'active' : ''}`} onClick={() => setViewMode('map')} id="view-map"><span className="icon">map</span></button>
+
+                        <div className="elp-header-stats">
+                          Showing <strong>{filtered.length}</strong> {filtered.length === 1 ? 'mess' : 'messes'} in <strong>HSR Layout</strong>
                         </div>
                     </div>
                 </div>
@@ -157,10 +181,16 @@ export default function MessListingPage() {
 
             <div className="container elp-body">
                 {/* Filter Sidebar */}
-                <aside className="elp-filters">
+                {showFilters && <div className="mobile-filter-backdrop" onClick={() => setShowFilters(false)}></div>}
+                <aside className={`elp-filters ${showFilters ? 'mobile-show' : ''}`}>
                     <div className="filter-header">
-                        <h3><span className="icon">tune</span> Filters</h3>
-                        <button className="filter-reset" onClick={() => { setFoodType('All'); setServices([]); setMinRating(0); setMaxPrice(4000); setUserLocation(null); setSortBy('recommended') }}>Reset</button>
+                        <h3><span className="material-icons-round" style={{ fontSize: '20px' }}>tune</span> Filters</h3>
+                        <div className="mobile-filter-actions">
+                          <button className="filter-reset" onClick={() => { setFoodType('All'); setServices([]); setMinRating(0); setMaxPrice(4000); setUserLocation(null); setSortBy('recommended') }}>Reset</button>
+                          <button className="mobile-filter-close-icon" onClick={(e) => { e.stopPropagation(); setShowFilters(false); }} aria-label="Close filters">
+                            <span className="material-icons-round">close</span>
+                          </button>
+                        </div>
                     </div>
 
                     <div className="filter-section">
@@ -169,7 +199,7 @@ export default function MessListingPage() {
                         onClick={handleDetectLocation}
                         disabled={detecting}
                       >
-                        <span className="icon">{detecting ? 'sync' : (userLocation ? 'check_circle' : 'my_location')}</span>
+                        <span className="material-icons-round">{detecting ? 'sync' : (userLocation ? 'check_circle' : 'my_location')}</span>
                         {detecting ? 'Detecting...' : (userLocation ? 'Location Detected' : 'Find Messes Near Me')}
                       </button>
                       {userLocation && (
@@ -236,6 +266,12 @@ export default function MessListingPage() {
                             </label>
                         </div>
                     </div>
+
+                    <div className="mobile-filter-footer">
+                      <button className="btn btn-primary" style={{ width: '100%' }} onClick={() => setShowFilters(false)}>
+                        Show {filtered.length} Results
+                      </button>
+                    </div>
                 </aside>
 
                 {/* Results */}
@@ -268,7 +304,7 @@ export default function MessListingPage() {
                             </Marker>
                           ))}
                           {userLocation && (
-                            <Marker position={[userLocation.lat, userLocation.lng]} icon={L.divIcon({ className: 'user-marker', html: '<span class="icon">person_pin_circle</span>' })} />
+                            <Marker position={[userLocation.lat, userLocation.lng]} icon={L.divIcon({ className: 'user-marker', html: '<span class="material-icons-round">person_pin_circle</span>' })} />
                           )}
                           <MapAutoCenter messes={filtered} userLocation={userLocation} />
                         </MapContainer>
@@ -284,27 +320,41 @@ export default function MessListingPage() {
                                           <div className="elp-card-emoji">{mess.emoji || '🥘'}</div>
                                         )}
                                         <div className="elp-card-badges">
-                                            <span className={`badge ${mess.veg ? 'badge-success' : 'badge-warning'}`}>{mess.veg ? '🟢 Veg' : '🔴 Non-Veg'}</span>
+                                            <span className={`elp-type-tag ${mess.veg ? 'veg' : 'non-veg'}`}>
+                                              {mess.veg ? '🟢 Veg' : '🔴 Non-Veg'}
+                                            </span>
+                                            {mess.price && (
+                                              <span className="elp-price-tag">₹{mess.price}/mo</span>
+                                            )}
                                         </div>
                                         {(mess.distanceVal || mess.distance) && (
                                           <div className="elp-card-distance">
-                                              <span className="icon" style={{ fontSize: '12px' }}>near_me</span>
+                                              <span className="material-icons-round">near_me</span>
                                               {mess.distanceVal ? `${mess.distanceVal} km` : mess.distance}
                                           </div>
                                         )}
                                     </div>
                                     <div className="elp-card-body">
-                                        <div className="elp-card-type">{mess.type || 'Standard'}</div>
+                                        <div className="elp-card-meta">
+                                          <span className="elp-card-type">{mess.type || 'Standard'}</span>
+                                          <div className="elp-rating-mini">⭐ {mess.rating || 'New'}</div>
+                                        </div>
+                                        <div className="elp-live-indicator-wrapper">
+                                          <div className={`elp-status-dot ${mess.isOpen ? 'is-open' : 'is-closed'}`} />
+                                          <span className={`elp-status-label ${mess.isOpen ? 'is-open' : 'is-closed'}`}>
+                                            {mess.isOpen ? 'Open Now' : 'Closed'}
+                                          </span>
+                                        </div>
                                         <h3 className="elp-card-name">{mess.name || 'Unnamed Mess'}</h3>
                                         <p className="elp-card-cuisine">{mess.cuisine || 'Multi-cuisine'}</p>
+                                        
                                         <div className="elp-card-tags">
-                                            {(mess.tags || []).map(t => <span key={t} className="pill elp-tag">{t}</span>)}
-                                        </div>
-                                        <div className="elp-card-footer">
-                                            <div>
-                                                <div className="elp-rating">⭐ <strong>{mess.rating || 'New'}</strong> <span className="elp-reviews">({mess.reviewCount || 0} reviews)</span></div>
-                                            </div>
-                                           
+                                            {(mess.tags || []).slice(0, 2).map(t => <span key={t} className="elp-mini-pill">{t}</span>)}
+                                            <AccurateCountPill 
+                                              messId={mess.id} 
+                                              initialCount={mess.reviewCount} 
+                                              className="elp-mini-pill reviews" 
+                                            />
                                         </div>
                                     </div>
                                 </Link>

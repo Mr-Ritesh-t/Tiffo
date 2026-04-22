@@ -37,7 +37,7 @@ export function MenuProvider({ children, messId }) {
 
   // Master Item Bank actions
   const addItem = async (item) => {
-    const newItem = await addMenuItem(messId, { ...item, isAvailableToday: false })
+    const newItem = await addMenuItem(messId, { ...item, isAvailableToday: true })
     setItems(prev => [...prev, newItem])
   }
   

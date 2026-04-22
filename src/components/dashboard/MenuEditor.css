@@ -203,3 +203,58 @@
     font-size: 0.75rem;
     color: #94a3b8;
 }
+
+/* ── Elite Footer & Live Indicator ── */
+.me-footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(0,0,0,0.03);
+    display: flex;
+    justify-content: center;
+}
+
+.db-live-indicator-elite {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 18px;
+    background: rgba(34, 197, 94, 0.06);
+    border: 1px solid rgba(34, 197, 94, 0.15);
+    border-radius: 100px;
+    color: #166534;
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.05);
+    transition: all 0.3s ease;
+}
+
+.db-live-indicator-elite:hover {
+    background: rgba(34, 197, 94, 0.1);
+    transform: scale(1.02);
+}
+
+.db-indicator-dot-elite {
+    width: 8px;
+    height: 8px;
+    background: #22c55e;
+    border-radius: 50%;
+    position: relative;
+    box-shadow: 0 0 10px rgba(34, 197, 94, 0.4);
+}
+
+.db-indicator-dot-elite::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    border: 2px solid #22c55e;
+    opacity: 0;
+    animation: indicatorPulse 2s infinite;
+}
+
+@keyframes indicatorPulse {
+    0% { transform: scale(0.8); opacity: 0.8; }
+    100% { transform: scale(2.4); opacity: 0; }
+}
