@@ -234,7 +234,7 @@ export default function MessDetailsPage() {
                 </div>
                 <div className="feature-pill">
                   <span className="icon">groups</span>
-                  Student & Student Friendly
+                  Student Friendly
                 </div>
               </div>
             </div>
