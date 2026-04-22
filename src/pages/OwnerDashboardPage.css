@@ -465,17 +465,11 @@
 }
 
 @media (max-width: 640px) {
-    .db-status-bar {
-        margin-right: 0;
-    }
     .db-status-text {
         display: none;
     }
     .db-status-toggle {
-        padding: 8px 10px;
-        gap: 8px; /* Balanced gap for dot and icon */
-        min-width: 50px;
-        justify-content: center;
-        border-radius: 12px; /* Slightly more modern box for mobile */
+        padding: 8px;
+        gap: 0;
     }
 }
