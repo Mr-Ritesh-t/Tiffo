@@ -1,4 +1,4 @@
-import { collection, addDoc, doc, runTransaction, query, getDocs, orderBy, limit, getCountFromServer } from 'firebase/firestore'
+import { collection, addDoc, doc, runTransaction, query, getDocs, orderBy, limit, getCountFromServer, setDoc, updateDoc } from 'firebase/firestore'
 import { db, auth } from './firebase'
 import { paths } from './firestorePaths'
 
@@ -20,46 +20,58 @@ export async function submitReview(messId, rating, comment, customerName = null,
 
     const messRef = doc(db, paths.messProfile(messId))
     const reviewsCollection = collection(db, paths.messReviews(messId))
+    const reviewRef = doc(reviewsCollection)
 
-    // Transaction to update mess rating, order status, and add the review atomically
-    await runTransaction(db, async (transaction) => {
-      const messDoc = await transaction.get(messRef)
-      if (!messDoc.exists()) {
-        throw new Error('Mess does not exist.')
-      }
+    // 1. Always attempt to add the Review Document first
+    // We do this outside the main transaction if we expect permission issues on the parent
+    const reviewData = {
+      orderId: orderId || null,
+      customerId: user?.uid || 'guest_user',
+      customerName: customerName || user?.displayName || 'Anonymous User',
+      rating,
+      comment: comment || '',
+      createdAt: new Date().toISOString()
+    }
 
-      const messData = messDoc.data()
-      const currentRating = messData.rating || 0
-      const currentCount = messData.reviewCount || 0
+    // 2. Add the review document
+    await setDoc(reviewRef, { id: reviewRef.id, ...reviewData })
 
-      // Calculate new moving average
-      const newCount = currentCount + 1
-      const newTotalScore = (currentRating * currentCount) + rating
-      const newRating = Number((newTotalScore / newCount).toFixed(1))
-
-      // 1. Update the parent Mess document
-      transaction.update(messRef, {
-        rating: newRating,
-        reviewCount: newCount
-      })
-
-      // 2. Mark the Order as reviewed if provided
-      if (orderId) {
+    // 3. Mark the Order as reviewed if provided
+    if (orderId) {
+      try {
         const orderRef = doc(db, paths.orders(), orderId)
-        transaction.update(orderRef, { isReviewed: true })
+        await updateDoc(orderRef, { isReviewed: true })
+      } catch (orderErr) {
+        console.warn('Failed to mark order as reviewed (Permissions?):', orderErr)
       }
+    }
 
-      // 3. Add the Review Document (Inside transaction for atomicity)
-      const reviewRef = doc(collection(db, paths.messReviews(messId)))
-      transaction.set(reviewRef, {
-        orderId: orderId || null,
-        customerId: user?.uid || 'guest_user',
-        customerName: customerName || user?.displayName || 'Anonymous User',
-        rating,
-        comment: comment || '',
-        createdAt: new Date().toISOString()
+    // 4. Attempt to update the parent Mess document (Aggregates)
+    // We wrap this in a separate try-catch so permission errors don't stop the review from being posted
+    try {
+      await runTransaction(db, async (transaction) => {
+        const messDoc = await transaction.get(messRef)
+        if (!messDoc.exists()) return // Mess might have been deleted
+
+        const messData = messDoc.data()
+        const currentRating = messData.rating || 0
+        const currentCount = messData.reviewCount || 0
+
+        // Calculate new moving average
+        const newCount = currentCount + 1
+        const newTotalScore = (currentRating * currentCount) + rating
+        const newRating = Number((newTotalScore / newCount).toFixed(1))
+
+        transaction.update(messRef, {
+          rating: newRating,
+          reviewCount: newCount
+        })
       })
-    })
+    } catch (aggErr) {
+      // Log the error but don't fail the submission
+      // Likely "missing or insufficient permissions" because customers can't edit mess profiles
+      console.warn('Could not update mess aggregate rating (Expected if not owner):', aggErr.message)
+    }
 
     return { success: true }
   } catch (err) {
