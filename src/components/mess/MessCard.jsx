@@ -6,8 +6,8 @@ import './MessCard.css'
  * @param {{ mess: import('../../types').Mess, view?: 'grid'|'list' }} props
  */
 export default function MessCard({ mess, view = 'grid' }) {
-  const vegLabel = mess.foodType === 'veg' ? 'Veg' : mess.foodType === 'non-veg' ? 'Non-Veg' : 'Veg & Non-Veg'
-  const vegVariant = mess.foodType === 'veg' ? 'success' : mess.foodType === 'non-veg' ? 'warning' : 'neutral'
+  const vegLabel = mess.foodType === 'veg' ? 'Veg' : mess.foodType === 'nonveg' ? 'Non-Veg' : 'Veg & Non-Veg'
+  const vegVariant = mess.foodType === 'veg' ? 'success' : mess.foodType === 'nonveg' ? 'warning' : 'neutral'
 
   return (
     <Link to={`/mess/${mess.id}`} className={`mess-card ${view === 'list' ? 'mess-card-list' : ''}`}>

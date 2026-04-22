@@ -93,7 +93,9 @@ export default function MessDetailsPage() {
                   <span className="icon">location_on</span> {mess.location || 'HSR Layout, Bangalore'}
                 </div>
                 <div className="profile-tags-row">
-                  <span className="pill">🟢 {mess.foodType === 'veg' ? 'Pure Veg' : 'Non-Veg Options'}</span>
+                  <span className="pill">
+                    {mess.foodType === 'veg' ? '🟢 Pure Veg' : (mess.foodType === 'nonveg' ? '🔴 Non-Veg Options' : '🟡 Veg & Non-Veg')}
+                  </span>
                   <span className="pill">⭐ {mess.rating || '0.0'} ({realReviewCount} Reviews)</span>
                 </div>
               </div>

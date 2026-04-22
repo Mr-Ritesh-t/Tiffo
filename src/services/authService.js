@@ -122,16 +122,20 @@ export async function completeOnboarding(data) {
       name: data.messName,
       location: data.messAddress,
       cuisine: data.cuisine || 'Multi-Cuisine',
-      foodType: 'both',
+      foodType: data.diet || 'both', // Use the diet field from onboarding
+      contactNumber: data.phone || '', // Store the business phone here
+      openingTime: data.openingTime || '08:00',
+      closingTime: data.closingTime || '22:00',
+      imageUrl: data.imageUrl || '',
       rating: 5.0,
       reviewCount: 0,
       pricePerMeal: data.pricePerMeal || 100,
       services: ['Delivery', 'Takeaway'],
       tags: ['New', 'Fresh'],
-      isOpen: true, // Must be open immediately to be visible
+      isOpen: true,
       supportsSingleItems: true,
       supportsThali: true,
-    }, { merge: true }) // merge true in case it already exists
+    }, { merge: true })
   }
 
   // Return updated profile

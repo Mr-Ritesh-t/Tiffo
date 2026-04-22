@@ -270,16 +270,22 @@ export default function OwnerMessManagementPage() {
                         <select id="mess-type" className="mm-input mm-select" value={messType} onChange={e => setMessType(e.target.value)}>
                           <option>Full Meal</option><option>Tiffin Service</option><option>Chapati Only</option><option>Bhaji Only</option>
                         </select>
-                        <span className="icon mm-select-arrow">expand_more</span>
+                      
                       </div>
                     </div>
                     <div className="mm-field">
                       <label className="mm-label" htmlFor="cuisine-type">Cuisine Type</label>
                       <div className="mm-select-wrap">
                         <select id="cuisine-type" className="mm-input mm-select" value={cuisineType} onChange={e => setCuisineType(e.target.value)}>
-                          <option>North Indian</option><option>South Indian</option><option>Gujarati</option><option>Rajasthani</option><option>Bengali</option>
+                          <option value="North Indian">North Indian</option>
+                          <option value="South Indian">South Indian</option>
+                          <option value="Maharashtrian">Maharashtrian</option>
+                          <option value="Gujarati">Gujarati</option>
+                          <option value="Rajasthani">Rajasthani</option>
+                          <option value="Bengali">Bengali</option>
+                          <option value="Mixed">Mixed / Pan-Indian</option>
                         </select>
-                        <span className="icon mm-select-arrow">expand_more</span>
+                       
                       </div>
                     </div>
                     <div className="mm-field">

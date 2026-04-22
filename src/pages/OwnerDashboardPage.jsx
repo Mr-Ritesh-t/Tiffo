@@ -146,8 +146,24 @@ export default function OwnerDashboardPage() {
               <div className="db-mess-info">
                 <div className="db-mess-header">
                   <div>
+                    <div className="db-mess-type-tag">
+                      <span className={`db-badge ${mess?.foodType || 'both'}`}>
+                        {mess?.foodType === 'veg' ? 'Pure Veg' : (mess?.foodType === 'nonveg' ? 'Non-Veg' : 'Veg & Non-Veg')}
+                      </span>
+                    </div>
                     <h3 className="db-mess-name">{mess?.name || 'My Mess'}</h3>
                     <p className="db-mess-location">{mess?.location?.split(',')[0] || 'Set Location'}</p>
+                  </div>
+                </div>
+
+                <div className="db-mess-meta">
+                  <div className="db-meta-row">
+                    <span className="icon">schedule</span>
+                    <span>{mess?.openingTime || '08:00'} - {mess?.closingTime || '22:00'}</span>
+                  </div>
+                  <div className="db-meta-row">
+                    <span className="icon">call</span>
+                    <span>{mess?.contactNumber || 'No Contact Set'}</span>
                   </div>
                 </div>
                 

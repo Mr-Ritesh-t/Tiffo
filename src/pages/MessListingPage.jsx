@@ -95,11 +95,11 @@ export default function MessListingPage() {
     const filtered = messes.filter(m => {
         // Fallbacks for data field names to support older records
         const effectivePrice = Number(m.price || m.pricePerMeal || 0)
-        const isVeg = m.veg !== undefined ? m.veg : (m.diet === 'veg' || m.foodType === 'Veg Only')
+        const isVeg = m.veg !== undefined ? m.veg : (m.diet === 'veg' || m.foodType === 'veg' || m.foodType === 'both')
         const currentType = m.type || 'Full Meal'
 
-        if (foodType === 'Veg Only' && !isVeg) return false
-        if (foodType === 'Non-Veg' && isVeg) return false
+        if (foodType === 'Veg Only' && (m.foodType === 'nonveg' || (m.veg === false))) return false
+        if (foodType === 'Non-Veg' && (m.foodType === 'veg' || (m.veg === true))) return false
         if (services.length > 0 && !services.includes(currentType)) return false
         if (m.rating < minRating) return false
         if (effectivePrice > maxPrice) return false
@@ -320,8 +320,8 @@ export default function MessListingPage() {
                                           <div className="elp-card-emoji">{mess.emoji || '🥘'}</div>
                                         )}
                                         <div className="elp-card-badges">
-                                            <span className={`elp-type-tag ${mess.veg ? 'veg' : 'non-veg'}`}>
-                                              {mess.veg ? '🟢 Veg' : '🔴 Non-Veg'}
+                                            <span className={`elp-type-tag ${mess.foodType === 'veg' ? 'veg' : (mess.foodType === 'nonveg' ? 'non-veg' : 'both')}`}>
+                                              {mess.foodType === 'veg' ? '🟢 Veg' : (mess.foodType === 'nonveg' ? '🔴 Non-Veg' : '🟡 Veg & Non-Veg')}
                                             </span>
                                             {mess.price && (
                                               <span className="elp-price-tag">₹{mess.price}/mo</span>
