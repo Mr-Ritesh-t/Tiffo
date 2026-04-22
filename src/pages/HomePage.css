@@ -316,7 +316,88 @@
 @media (max-width: 768px) {
   .hero { padding-top: 140px; }
   .hero-stats { gap: 24px; flex-wrap: wrap; }
-  .steps-grid { grid-template-columns: 1fr; }
+  
+  /* ── Upgraded Mobile Timeline ── */
+  .steps-grid { 
+    grid-template-columns: 1fr; 
+    gap: 40px;
+    position: relative;
+    padding-left: 20px;
+  }
+
+  /* Vertical Connector Line */
+  .steps-grid::before {
+    content: '';
+    position: absolute;
+    left: 42px; /* Centers with the node */
+    top: 20px;
+    bottom: 20px;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--primary) 0%, var(--primary-light) 50%, #ff9800 100%);
+    opacity: 0.2;
+    border-radius: 10px;
+  }
+
+  .step-card-elite {
+    padding: 32px 24px;
+    margin-left: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  /* Connector Node */
+  .step-card-elite::before {
+    content: '';
+    position: absolute;
+    left: -53px;
+    top: 38px;
+    width: 14px;
+    height: 14px;
+    background: var(--white);
+    border: 3px solid var(--primary);
+    border-radius: 50%;
+    z-index: 10;
+    box-shadow: 0 0 10px rgba(255, 87, 34, 0.3);
+  }
+
+  /* Node Pulse for the Active/Current Step */
+  .step-card-elite:first-child::before {
+    box-shadow: 0 0 0 4px rgba(255, 87, 34, 0.1);
+    animation: nodePulse 2s infinite;
+  }
+
+  .step-icon-elite {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 20px;
+  }
+
+  .step-icon-elite .icon { font-size: 22px !important; }
+  
+  .step-number-elite {
+    top: 20px;
+    right: 24px;
+    font-size: 0.9rem;
+  }
+
+  .step-title-elite {
+    font-size: 1.25rem;
+    margin-bottom: 12px;
+  }
+
+  .step-desc-elite {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
   .hero-search-glass { padding-right: 4px; }
   .btn-elite-primary { padding: 12px 18px; font-size: 0.9rem; }
+}
+
+@keyframes nodePulse {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 87, 34, 0.4); }
+  70% { transform: scale(1.2); box-shadow: 0 0 0 10px rgba(255, 87, 34, 0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 87, 34, 0); }
 }

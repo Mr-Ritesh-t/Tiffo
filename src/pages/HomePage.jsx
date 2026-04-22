@@ -48,7 +48,7 @@ export default function HomePage() {
 
             <section className="section how-it-works" style={{ paddingTop: 0 }}>
                 <div className="container">
-                    <div className="section-header center">
+                    <div className="section-header center" style={{margin:'10px 10px 10px 40px'}}>
                         <h2 className="section-title">How it Works</h2>
                         <p className="section-subtitle">Get started with TiffO in 3 simple steps</p>
                     </div>
