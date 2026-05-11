@@ -663,3 +663,33 @@
 .mm-logout-top-btn .icon {
   font-size: 20px;
 }
+
+/* ── Notifications & Alerts ── */
+.mm-notif-settings {
+    padding: 1rem 0;
+}
+
+.mm-notif-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+}
+
+.mm-notif-info {
+    flex: 1;
+}
+
+.mm-notif-name {
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--text-main);
+    margin-bottom: 4px;
+}
+
+.mm-notif-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+

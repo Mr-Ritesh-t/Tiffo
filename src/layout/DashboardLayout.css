@@ -263,11 +263,20 @@
   .dl-topbar { padding: 0.85rem 1rem; }
 }
 
-.dl-topbar-left, .dl-topbar-right {
+.dl-topbar-left {
   display: flex;
   align-items: center;
   gap: 1rem;
   min-width: 0;
+  flex: 1;
+}
+
+.dl-topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-width: 0;
+  flex-shrink: 0;
 }
 
 @media (max-width: 1024px) {
@@ -278,6 +287,7 @@
 .dl-topbar-title-group {
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 .dl-topbar-title {

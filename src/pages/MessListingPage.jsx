@@ -245,7 +245,7 @@ export default function MessListingPage() {
                         />
                         <div className="filter-range-labels">
                             <span>₹1,500</span>
-                            <span>₹4,000</span>
+                            <span>₹4,000</span>æ
                         </div>
                     </div>
 
@@ -323,6 +323,12 @@ export default function MessListingPage() {
                                             <span className={`elp-type-tag ${mess.foodType === 'veg' ? 'veg' : (mess.foodType === 'nonveg' ? 'non-veg' : 'both')}`}>
                                               {mess.foodType === 'veg' ? '🟢 Veg' : (mess.foodType === 'nonveg' ? '🔴 Non-Veg' : '🟡 Veg & Non-Veg')}
                                             </span>
+                                            {mess.subscription === 'elite' && (
+                                              <span className="elp-elite-badge">
+                                                <span className="icon">workspace_premium</span>
+                                                Elite
+                                              </span>
+                                            )}
                                             {mess.price && (
                                               <span className="elp-price-tag">₹{mess.price}/mo</span>
                                             )}

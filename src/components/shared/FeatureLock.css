@@ -1,0 +1,80 @@
+.feature-lock-container {
+    position: relative;
+    border-radius: 1.25rem;
+    overflow: hidden;
+    min-height: 200px;
+}
+
+.feature-content-blurred {
+    filter: blur(8px);
+    opacity: 0.6;
+    pointer-events: none;
+    user-select: none;
+}
+
+.lock-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(2px);
+    z-index: 10;
+}
+
+.lock-card {
+    background: var(--surface);
+    padding: 2.5rem;
+    border-radius: 1.5rem;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    max-width: 400px;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.lock-icon {
+    width: 60px;
+    height: 60px;
+    background: var(--primary-light);
+    color: var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+}
+
+.lock-icon span {
+    font-size: 2rem;
+}
+
+.lock-card h3 {
+    font-size: 1.5rem;
+    color: var(--text-main);
+    margin-bottom: 0.75rem;
+}
+
+.lock-card p {
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.elite-upgrade-btn {
+    width: 100%;
+    padding: 1rem;
+    font-weight: 600;
+    background: linear-gradient(135deg, var(--primary) 0%, #FF8A65 100%);
+    border: none;
+    color: white;
+}
+
+/* Dark mode adjustments */
+[data-theme='dark'] .lock-card {
+    background: var(--surface-dark);
+    border-color: rgba(255,255,255,0.1);
+}

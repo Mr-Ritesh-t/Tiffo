@@ -5,6 +5,8 @@ import { useAuth } from '../hooks/useAuth'
 import LocationPicker from '../components/LocationPicker'
 import { getMessById, updateMess } from '../services/messService'
 import * as storageService from '../services/storageService'
+import FeatureLock from '../components/shared/FeatureLock'
+import { whatsappService } from '../services/whatsappService'
 import './OwnerMessManagementPage.css'
 
 const TABS = [
@@ -12,6 +14,7 @@ const TABS = [
   { id: 'menu',    icon: 'restaurant_menu', label: 'Menu & Gallery'  },
   { id: 'hours',   icon: 'schedule',        label: 'Business Hours'  },
   { id: 'contact', icon: 'settings',        label: 'Contact Settings'},
+  { id: 'notifs',  icon: 'notifications',   label: 'Alerts & SMS'    },
 ]
 
 const DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
@@ -33,7 +36,6 @@ export default function OwnerMessManagementPage() {
   const [messType, setMessType] = useState('Full Meal')
   const [cuisineType, setCuisineType] = useState('North Indian')
   const [description, setDescription] = useState('')
-  const [pricePerMeal, setPricePerMeal] = useState(100)
 
   const [hours, setHours] = useState(defaultHours)
   const [address, setAddress] = useState('')
@@ -46,6 +48,8 @@ export default function OwnerMessManagementPage() {
   const [loading, setLoading] = useState(true)
   const [uploading, setUploading] = useState(false)
   const [saved, setSaved] = useState(false)
+  const [whatsappOrderNotifs, setWhatsappOrderNotifs] = useState(false)
+  const [whatsappMenuNotifs, setWhatsappMenuNotifs] = useState(false)
 
   // 🔄 Fetch Live Data on Load
   useEffect(() => {
@@ -58,7 +62,6 @@ export default function OwnerMessManagementPage() {
           setMessType(data.type || 'Full Meal')
           setCuisineType(data.cuisine || 'North Indian')
           setDescription(data.description || '')
-          setPricePerMeal(data.pricePerMeal || 100)
 
           setHours(data.businessHours || defaultHours)
           setAddress(data.location || '')
@@ -67,6 +70,8 @@ export default function OwnerMessManagementPage() {
           setMapLink(data.mapLink || '')
           setGallery(data.gallery || [])
           setImageUrl(data.imageUrl || '')
+          setWhatsappOrderNotifs(data.whatsappOrderNotifs || false)
+          setWhatsappMenuNotifs(data.whatsappMenuNotifs || false)
           if (data.lat && data.lng) {
             setCoords({ lat: data.lat, lng: data.lng })
           }
@@ -100,7 +105,6 @@ export default function OwnerMessManagementPage() {
         type: messType,
         cuisine: cuisineType,
         description,
-        pricePerMeal,
 
         businessHours: hours,
         location: address,
@@ -111,6 +115,8 @@ export default function OwnerMessManagementPage() {
         imageUrl,
         lat: coords.lat,
         lng: coords.lng,
+        whatsappOrderNotifs,
+        whatsappMenuNotifs,
         updatedAt: new Date().toISOString()
       }
       
@@ -287,10 +293,6 @@ export default function OwnerMessManagementPage() {
                         </select>
                        
                       </div>
-                    </div>
-                    <div className="mm-field">
-                      <label className="mm-label" htmlFor="price-per-meal">Price Per Meal (₹)</label>
-                      <input id="price-per-meal" className="mm-input" type="number" min={50} max={500} value={pricePerMeal} onChange={e => setPricePerMeal(+e.target.value)} />
                     </div>
                   </div>
                   <div className="mm-field">
@@ -507,6 +509,76 @@ export default function OwnerMessManagementPage() {
                     </div>
                   </div>
                 </div>
+              </div>
+            )}
+
+            {/* NOTIFICATIONS & ALERTS */}
+            {activeTab === 'notifs' && (
+              <div className="mm-card">
+                <div className="mm-card-header">
+                    <div className="mm-card-title-group">
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <div>
+                        <h3 className="mm-card-title">
+                          <span className="icon mm-card-icon">notifications_active</span>
+                          Customer Notifications
+                        </h3>
+                        <p className="mm-card-sub">Automate alerts for orders and menu updates</p>
+                      </div>
+                      <button 
+                        className="ui-btn ui-btn-sm" 
+                        style={{ background: '#25D366', color: 'white', border: 'none' }}
+                        onClick={() => whatsappService.sendOrderConfirmation(phone, {
+                          messName: messName,
+                          items: "1x Special Veg Thali",
+                          total: "150"
+                        })}
+                      >
+                        <span className="icon" style={{ fontSize: '18px' }}>chat</span>
+                        Test WhatsApp
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <FeatureLock featureName="Automated WhatsApp Alerts">
+                    <div className="mm-notif-settings">
+                      <div className="mm-notif-row">
+                        <div className="mm-notif-info">
+                          <h4 className="mm-notif-name">WhatsApp Order Confirmations</h4>
+                          <p className="mm-notif-desc">Send instant WhatsApp message to customers when you accept their order.</p>
+                        </div>
+                        <div 
+                          className={`mm-elite-toggle ${whatsappOrderNotifs ? 'active' : ''}`}
+                          onClick={() => setWhatsappOrderNotifs(!whatsappOrderNotifs)}
+                        >
+                           <div className="mm-et-track"><div className="mm-et-thumb" /></div>
+                        </div>
+                      </div>
+
+                      <div className="mm-divider" style={{ margin: '1.5rem 0' }} />
+
+                      <div className="mm-notif-row">
+                        <div className="mm-notif-info">
+                          <h4 className="mm-notif-name">Menu Update Alerts</h4>
+                          <p className="mm-notif-desc">Notify your regular subscribers whenever you update today's menu.</p>
+                        </div>
+                        <div 
+                          className={`mm-elite-toggle ${whatsappMenuNotifs ? 'active' : ''}`}
+                          onClick={() => setWhatsappMenuNotifs(!whatsappMenuNotifs)}
+                        >
+                           <div className="mm-et-track"><div className="mm-et-thumb" /></div>
+                        </div>
+                      </div>
+
+                      <div className="mm-notif-actions" style={{ marginTop: '2rem', display: 'flex', justifyContent: 'flex-end' }}>
+                        <button className="ui-btn ui-btn-primary" onClick={handleSave}>
+                          <span className="icon">save</span>
+                          Save Notification Settings
+                        </button>
+                      </div>
+                   </div>
+                </FeatureLock>
               </div>
             )}
           </div>

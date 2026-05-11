@@ -30,7 +30,6 @@ export default function OwnerRegisterMessPage() {
   })
   const [service, setService] = useState({
     services: ['Delivery', 'Dine-In'],
-    pricePerMeal: '',
     vegOnly: false,
   })
 
@@ -306,18 +305,6 @@ export default function OwnerRegisterMessPage() {
                   ))}
                 </div>
                 {errors.services && <span className="rmr-err">{errors.services}</span>}
-              </div>
-
-              <div className="rmr-grid-2">
-                <div className="rmr-field">
-                  <label className="rmr-label">Price per Meal (₹)</label>
-                  <div className="rmr-input-prefix-wrap">
-                    <span className="rmr-prefix">₹</span>
-                    <input className="rmr-input rmr-input-prefixed" type="number" min={30}
-                      placeholder="e.g. 120" value={service.pricePerMeal}
-                      onChange={e => setS('pricePerMeal', e.target.value)} />
-                  </div>
-                </div>
               </div>
 
               <div className="rmr-grid-2">

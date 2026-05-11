@@ -13,8 +13,7 @@ export default function Navbar({ variant = 'default' }) {
         <nav className={`navbar ${isDashboard ? 'navbar-dashboard' : ''}`}>
             <div className="container navbar-inner">
                 <Link to="/" className="navbar-brand">
-                    <span className="navbar-logo-icon">🍱</span>
-                    <span className="navbar-brand-text">Tiffo</span>
+                    <img src="/icon.png" alt="Tiffo Logo" style={{ height: '40px', objectFit: 'contain' }} />
                 </Link>
 
                 {!isDashboard && (

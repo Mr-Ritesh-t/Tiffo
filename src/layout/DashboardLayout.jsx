@@ -45,11 +45,8 @@ export default function DashboardLayout({ children }) {
 
           {/* Logo */}
           <div className="dl-logo">
-            <span className="dl-logo-emoji">🍱</span>
+            <img src="/icon.png" alt="Tiffo Logo" style={{ height: '40px', objectFit: 'contain' }} />
             <div>
-              <div className="dl-logo-title">
-                <span className="dl-logo-tiffo">Tiffo</span>
-              </div>
               <div className="dl-logo-sub">Mess Management Portal</div>
             </div>
           </div>

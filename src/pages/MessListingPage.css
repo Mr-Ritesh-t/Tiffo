@@ -350,6 +350,22 @@
 .elp-type-tag.veg { background: rgba(34, 197, 94, 0.1); color: #15803d; }
 .elp-type-tag.non-veg { background: rgba(239, 68, 68, 0.1); color: #b91c1c; }
 
+.elp-elite-badge {
+  background: linear-gradient(135deg, #FFD700 0%, #FFA000 100%);
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  box-shadow: 0 4px 10px rgba(255, 160, 0, 0.3);
+}
+
+.elp-elite-badge .icon { font-size: 12px; }
+
 .elp-price-tag {
   background: rgba(15, 23, 42, 0.8);
   color: #fff;

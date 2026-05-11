@@ -7,6 +7,7 @@ import {
 } from 'firebase/auth'
 import { doc, getDoc, setDoc, updateDoc, deleteDoc } from 'firebase/firestore'
 import { auth, db } from './firebase'
+import { SUBSCRIPTION_PLANS } from '../constants/subscriptions'
 
 /**
  * Get full user profile from Firestore by UID
@@ -78,6 +79,7 @@ export async function signup({ name, email, password, role }) {
     role,
     onboardingCompleted: false,
     createdAt: new Date().toISOString(),
+    subscription: role === 'owner' ? SUBSCRIPTION_PLANS.FREE : 'standard',
     ...(role === 'owner' ? { messId: `mess-${user.uid}` } : {})
   }
 
@@ -168,3 +170,19 @@ export async function deleteCurrentUserAccount() {
     throw err
   }
 }
+
+/**
+ * Upgrade user to Elite subscription
+ * @param {string} uid 
+ * @returns {Promise<import('../types').User>}
+ */
+export async function upgradeToElite(uid) {
+  if (!uid) throw new Error('UID required')
+  const docRef = doc(db, 'users', uid)
+  await updateDoc(docRef, {
+    subscription: SUBSCRIPTION_PLANS.ELITE,
+    updatedAt: new Date().toISOString()
+  })
+  return await getUserProfile(uid)
+}
+

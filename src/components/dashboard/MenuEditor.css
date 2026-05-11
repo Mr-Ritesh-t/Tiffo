@@ -45,6 +45,13 @@
     box-shadow: 0 4px 15px rgba(0,0,0,0.06);
 }
 
+@media (max-width: 640px) {
+    .me-tab {
+        padding: 8px 14px;
+        font-size: 0.75rem;
+    }
+}
+
 /* ── Menu Content Card ── */
 .me-card {
     padding: 2rem;

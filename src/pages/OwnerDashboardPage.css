@@ -200,14 +200,7 @@
     box-shadow: 0 4px 12px rgba(255, 87, 36, 0.08);
 }
 
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--glass-border);
-  border-radius: 28px;
-  box-shadow: var(--shadow-lg);
-  margin-bottom: 2rem;
-  transition: var(--transition-standard);
-}
+
 
 .db-premium-card:hover {
   box-shadow: var(--shadow-elite);
@@ -526,3 +519,101 @@
     font-size: 18px;
     color: #94a3b8;
 }
+
+/* ── Subscription Card ── */
+.db-sub-card {
+    margin-top: 1.5rem;
+    padding: 1.75rem;
+    background: white;
+    border-radius: 24px;
+    border: 1px solid #e2e8f0;
+}
+
+.db-sub-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
+}
+
+.db-sub-title {
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.db-sub-badge {
+    padding: 6px 12px;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.db-sub-badge.free {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.db-sub-badge.elite {
+    background: linear-gradient(135deg, #FFF8E1 0%, #FFECB3 100%);
+    color: #FF8F00;
+    border: 1px solid #FFE082;
+    box-shadow: 0 4px 10px rgba(255, 143, 0, 0.1);
+}
+
+.db-sub-features {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 1.5rem;
+}
+
+.db-sub-feature {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.85rem;
+    color: #475569;
+    font-weight: 600;
+}
+
+.db-sub-feature.locked {
+    color: #94a3b8;
+    text-decoration: line-through;
+}
+
+.db-sub-feature .icon {
+    font-size: 16px;
+}
+
+.db-sub-feature.unlocked .icon { color: #22c55e; }
+.db-sub-feature.locked .icon { color: #cbd5e1; }
+
+.btn-upgrade-elite {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 14px;
+    border: none;
+    background: linear-gradient(135deg, var(--primary) 0%, #FF8A65 100%);
+    color: white;
+    font-weight: 800;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.3s var(--anim-ease);
+    box-shadow: 0 10px 20px rgba(255, 87, 36, 0.2);
+}
+
+.btn-upgrade-elite:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 30px rgba(255, 87, 36, 0.3);
+}
+

@@ -5,7 +5,7 @@ import ItemBank from '../menu/ItemBank'
 import ThaliBuilder from '../menu/ThaliBuilder'
 import './MenuEditor.css'
 
-function AdvancedMenuBoard() {
+function AdvancedMenuBoard({ accountContent }) {
   const { items, thalis, toggleAvailability, toggleThaliAvailability, loading } = useMenu()
   const { user } = useAuth()
   const [activeTab, setActiveTab] = useState('daily')
@@ -27,12 +27,16 @@ function AdvancedMenuBoard() {
           <button className={`me-tab ${activeTab === 'thalis' ? 'active' : ''}`} onClick={() => setActiveTab('thalis')}>
             Thalis
           </button>
+          <button className={`me-tab ${activeTab === 'account' ? 'active' : ''}`} onClick={() => setActiveTab('account')}>
+            Account & Reviews
+          </button>
         </div>
       </div>
 
       <div className="me-content">
         {activeTab === 'items' && <div className="me-card"><ItemBank /></div>}
         {activeTab === 'thalis' && <div className="me-card"><ThaliBuilder /></div>}
+        {activeTab === 'account' && <div className="me-account-tab" style={{ animation: 'fadeIn 0.3s ease' }}>{accountContent}</div>}
         
         {activeTab === 'daily' && (
           <div className="me-card">
@@ -113,14 +117,14 @@ function AdvancedMenuBoard() {
   )
 }
 
-export default function MenuEditor() {
+export default function MenuEditor({ accountContent }) {
   const { user } = useAuth()
   
   if (!user) return null
 
   return (
     <MenuProvider messId={user.id}>
-      <AdvancedMenuBoard />
+      <AdvancedMenuBoard accountContent={accountContent} />
     </MenuProvider>
   )
 }
